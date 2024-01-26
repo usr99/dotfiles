@@ -1,0 +1,52 @@
+(include "./menu/eww.yuck")
+(include "./workspaces/eww.yuck")
+(include "./settings/eww.yuck")
+
+(defwidget scalable [var strvar]
+  (eventbox  :class "inner"
+     :onhover "${EWW_CMD} update ${strvar}=true"
+     :onhoverlost "${EWW_CMD} update ${strvar}=false"
+   (transform  :scale-x { var ? "115%" : "100%"}
+    :scale-y { var ? "115%" : "100%"}
+    :translate-x { var ? "-8%" : "0%"}
+    :translate-y { var ? "-9%" : "0%"}
+    (children))))
+  
+(defwidget slider [var strvar get set]
+  (eventbox   :onhover "${EWW_CMD} update ${strvar}=true"
+     :onhoverlost "${EWW_CMD} update ${strvar}=false"
+   (box  :space-evenly false
+    :orientation "h"
+    (revealer   :transition "slideright"
+     :reveal var
+     :duration "500ms"
+     (box  :class "slider"
+      (scale :flipped true :value get :onchange set :min 0 :max 100 :orientation "h")))
+    (children))))
+
+(defwidget bar []
+  (centerbox
+   :class "container"
+   :orientation "h"
+   (menu)
+   (workspaces)
+   (settings)))
+
+(defvar MONITOR_MODE "double")
+
+(defwindow bar-monitor0 
+ :monitor 0
+ :stacking "fg"
+ :focusable false
+  :exclusive true
+  :geometry (geometry :anchor "top center" :width "100%")
+ (bar))
+  
+(defwindow bar-monitor1 
+ :monitor 1 
+ :stacking "fg"
+ :focusable false
+  :exclusive true
+  :geometry (geometry :anchor "top center" :width "100%")
+ (bar))
+  

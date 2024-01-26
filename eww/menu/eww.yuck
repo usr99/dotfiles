@@ -1,0 +1,13 @@
+(defvar _arch_hover false)
+(defpoll _time :interval "10s" "date '+%H:%M'")
+
+(defwidget menu []
+  (box  :space-evenly false
+    :class "menu"
+   :orientation "h"
+   :halign "start"
+   (scalable :var _arch_hover :strvar "_arch_hover"
+    (button :class "archlinux"
+			:onclick "./scripts/switch_monitor_layout.sh"
+			(label :text "")))
+   (box :class "clock" (label :text _time))))

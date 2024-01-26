@@ -1,0 +1,43 @@
+; network
+(defvar _net_hover false)
+(defpoll _network :interval "5s" "nmcli -t -f SSID,ACTIVE device wifi | awk -F ':' '{if($2==\"oui\")print$1}'")
+
+; volume
+(defvar _volume_hover false)
+(defvar _volume_show false)
+(deflisten _volume_icon "./scripts/audio.sh --get-icon")
+(deflisten _volume "./scripts/audio.sh --get-vol")
+
+; other
+(defvar _power_hover false)
+        
+(defwidget network []
+  (scalable :var _net_hover :strvar "_net_hover"
+   (button :class "btn-net" 
+    :onclick "echo hello" 
+    :tooltip "${_network}"
+    :style { strlength(_network) == 0 ? "color: #dd6777" : ""} ; same as $red from .scss
+    (label :text ""))))
+
+(defwidget volume []
+  (slider :var _volume_show :strvar "_volume_show" :get _volume :set "./scripts/audio.sh --set-vol {}"
+   (scalable :var _volume_hover :strvar "_volume_hover"
+    (button  :class "btn-vol"
+     :onclick "./scripts/audio.sh --toggle-vol"
+     (label  :text _volume_icon
+      :tooltip "${_volume}%")))))
+
+(defwidget powermenu []
+  (scalable :var _power_hover :strvar "_power_hover"
+   (button :class "btn-power" :onclick "$HOME/.config/rofi/scripts/powermenu.sh"
+    (label :text ""))))
+
+(defwidget settings []
+  (box  :class "settings"
+   :space-evenly false
+   :spacing 0
+   :orientation "h"
+   :halign "end"
+		(network)
+		(volume)
+		(powermenu)))
