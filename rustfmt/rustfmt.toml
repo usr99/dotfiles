@@ -1,0 +1,5 @@
+fn_single_line = true
+hard_tabs = true
+hex_literal_case = "Lower"
+trailing_comma = "Never"
+

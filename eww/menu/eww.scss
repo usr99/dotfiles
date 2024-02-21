@@ -1,0 +1,27 @@
+.menu {
+	margin-top: 0.7em;
+	margin-left: 0.6em;
+}
+
+.clock {
+	border-radius: 1em;
+
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	// padding-top: 0.4em;
+	
+	label {
+		// font-family: "FiraMono Nerd Font";
+		font-weight: 200;
+		font-size: 1.2em;
+		color: $fg;
+	}
+}
+
+.archlinux {
+	all: unset;
+	padding-left: 0.3em;
+	padding-right: 0.8em;
+	font-size: 1.5em;
+	color: $fg;
+}

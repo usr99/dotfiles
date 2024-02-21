@@ -1,0 +1,16 @@
+@import "colors.scss";
+@import "settings/eww.scss";
+@import "workspaces/eww.scss";
+@import "menu/eww.scss";
+
+* {
+	all: unset;
+	font-family: 'JetBrains Mono Nerd Font';
+}
+
+tooltip {
+	color: $fg;
+	font-weight: 500;
+	background-color: rgba($black, 0.3);
+	border-radius: 10px;
+}

@@ -1,0 +1,4 @@
+(deflisten _workspaces "./scripts/workspaces.py")
+
+(defwidget workspaces []
+	(literal :content _workspaces))

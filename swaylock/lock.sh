@@ -1,0 +1,20 @@
+swaylock \
+	--screenshots \
+	--indicator-idle-visible \
+	--indicator-radius 150 \
+	--indicator-thickness 30 \
+	--effect-blur 7x5 \
+	--ring-color 222330 \
+	--key-hl-color bb9af7 \
+	--line-color 00000000 \
+	--inside-color 00000000 \
+	--separator-color 00000000 \
+	--text-color bb9af7 \
+	--line-wrong-color dd6777 \
+	--ring-wrong-color dd6777 \
+	--line-clear-color 00000000 \
+	--line-ver-color 00000000 \
+	--line-caps-lock-color bb9af7 \
+	--text-caps-lock-color bb9af7 \
+	--datestr '' \
+	--font 'JetBrains Mono Nerd Font'
