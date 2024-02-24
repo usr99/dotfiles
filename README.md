@@ -24,7 +24,7 @@ Follow the ArchLinux installation. Below are some hints to help you.
 ### Network Configuration
 * `iwd` is the wireless daemon that handles Wifi protocols (`iwctl` is the CLI)
 * `dhcpcd` is the daemon for dynamic obtention of an IP address
-* `network-manager` has a cli frontend
+* `networkmanager` has a cli frontend
 * both have to be enabled with `systemctl enable`
 * if you encounter name resolution issues, edit `/etc/resolv.conf`
 
