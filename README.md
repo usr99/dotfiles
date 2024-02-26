@@ -46,6 +46,7 @@ Now you can boot in the system.
 ### Firewall
 * install `nftables` or `iptables` and `ufw`
 * `sudo ufw default deny`
+* don't forget `sudo ufw enable`
 
 # Desktop
 
