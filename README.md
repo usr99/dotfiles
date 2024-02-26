@@ -53,6 +53,7 @@ Now you can boot in the system.
 ### Configure date and time
 * `timedatectl set-ntp true`
 ### Configure AUR
+* you will need the followings tools: `binutils make gcc pkg-config fakeroot`
 * `git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si`
 * `yay -Y --gendb && yay -Syu --devel && yay -Syu --devel --save`
 ### Compositor (Hyprland)
