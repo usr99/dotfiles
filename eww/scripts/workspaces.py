@@ -29,9 +29,5 @@ while True:
         if "workspace>>" == item[0:11]:
             workspaces_num = item[-1]
             
-            if int(workspaces_num) > 5:
-                workspaces_num = 1
-                subprocess.run("hyprctl dispatch workspace 1", shell=True)
-
             update_workspace(int(workspaces_num))
             subprocess.run(f"echo '(box)'", shell=True, timeout=1, capture_output=True, text=True)

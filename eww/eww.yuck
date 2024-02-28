@@ -32,8 +32,16 @@
    (workspaces)
    (settings)))
   
-(defwindow bar
+(defwindow bar-monitor0 
  :monitor 0
+ :stacking "fg"
+ :focusable false
+  :exclusive true
+  :geometry (geometry :anchor "top center" :width "100%")
+ (bar))
+  
+(defwindow bar-monitor1 
+ :monitor 1 
  :stacking "fg"
  :focusable false
   :exclusive true

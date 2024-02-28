@@ -8,15 +8,15 @@
 (deflisten _volume_icon "./scripts/audio.sh --get-icon")
 (deflisten _volume "./scripts/audio.sh --get-vol")
 
-; brightness
-(defvar _brightness_hover false)
-(defvar _brightness_show false)
-(deflisten _brightness "./scripts/backlight.sh --get")
+;; ; brightness
+;; (defvar _brightness_hover false)
+;; (defvar _brightness_show false)
+;; (deflisten _brightness "./scripts/backlight.sh --get")
   
-; battery
-(defvar _battery_hover false)
-(deflisten _battery_icon "./scripts/battery.sh --icon")
-(deflisten _battery_perc "./scripts/battery.sh --perc")
+;; ; battery
+;; (defvar _battery_hover false)
+;; (deflisten _battery_icon "./scripts/battery.sh --icon")
+;; (deflisten _battery_perc "./scripts/battery.sh --perc")
 
 ; other
 (defvar _power_hover false)
@@ -37,17 +37,17 @@
      (label  :text _volume_icon
       :tooltip "${_volume}%")))))
 
-(defwidget brightness []
-  (slider :var _brightness_show :strvar "_brightness_show" :get _brightness :set "./scripts/backlight.sh --set {}"
-   (scalable :var _brightness_hover :strvar "_brightness_hover"
-    (label  :class "btn-backlight"
-     :text "󰃠"
-     :tooltip "${_brightness}%"))))
-(defwidget battery []
-  (scalable :var _battery_hover :strvar "_battery_hover"
-   (label  :class "btn-battery"
-    :text _battery_icon
-    :tooltip "${_battery_perc}%")))
+;; (defwidget brightness []
+;;   (slider :var _brightness_show :strvar "_brightness_show" :get _brightness :set "./scripts/backlight.sh --set {}"
+;;    (scalable :var _brightness_hover :strvar "_brightness_hover"
+;;     (label  :class "btn-backlight"
+;;      :text "󰃠"
+;;      :tooltip "${_brightness}%"))))
+;; (defwidget battery []
+;;   (scalable :var _battery_hover :strvar "_battery_hover"
+;;    (label  :class "btn-battery"
+;;     :text _battery_icon
+;;     :tooltip "${_battery_perc}%")))
             
 (defwidget powermenu []
   (scalable :var _power_hover :strvar "_power_hover"
@@ -62,6 +62,4 @@
    :halign "end"
    (network)
    (volume)
-   (brightness)
-   (battery)
    (powermenu)))
