@@ -45,4 +45,4 @@ bindings = [
 
 [shell]
 program = "/usr/bin/zsh"
-args = ["-l", "-c", "tmux attach || tmux"]
+args = ["-l", "-c", "tmux"]
