@@ -70,6 +70,16 @@ hypr() {
 
     exec Hyprland
 }
+
+switch_monitor_mode() {
+	if [[ `eww get MONITOR_MODE` == "single" ]]; then
+		eww update MONITOR_MODE=double
+		ln -sf ~/.config/hypr/double_monitor.conf ~/.config/hypr/monitors.conf
+	else
+		eww update MONITOR_MODE=single
+		ln -sf ~/.config/hypr/single_monitor.conf ~/.config/hypr/monitors.conf
+	fi
+}
 ```
 * source ~/.zshrc
 * p10k configure
