@@ -35,7 +35,7 @@ sudo pacman -S \
 	hyprland gtk3 gtk-layer-shell qt5-wayland qt5ct libva \
 	pipewire pipewire-pulse pipewire-audio pipewire-jack wireplumber \
 	bluez bluez-utils \
-	thunar alacritty firefox pulsemixer \
+	thunar alacritty firefox pulsemixer brightnessctl \
 	xdg-utils xdg-user-dirs wl-clipboard grim slurp feh \
 	zsh tmux neovim unzip ripgred fd \
 	rustup \
