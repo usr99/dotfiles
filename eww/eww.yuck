@@ -31,7 +31,9 @@
    (menu)
    (workspaces)
    (settings)))
-  
+
+(defvar MONITOR_MODE "single")
+
 (defwindow bar-monitor0 
  :monitor 0
  :stacking "fg"
