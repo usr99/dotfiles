@@ -1,3 +1,9 @@
+# Arch dotfiles
+
+## Installation
+
+### System
+
 * if azerty keyboard
     * loadkeys fr
 
@@ -71,13 +77,98 @@
     * echo "options nvidia-drm modeset=1" > /etc/modprobe.d/nvidia.conf
     * find more info there https://wiki.hyprland.org/Nvidia/
 
+* create user
+    * useradd -m -G wheel <username>
+    * passwd <username>
+* pacman -S sudo
+* SUDO_EDITOR=vim visudo
+	* `Defaults timestamp_timeout=15`
+	* `Defaults insults`
+	* uncomment the part about the `wheel` group at the end
+* lock root
+    * passwd -l root
+
 * leave arch-chroot
 * umount -R /mnt
 * reboot
     * you might need to make GRUB your default boot
 
+* log as <username>
 * check microcode update
-* journalctl -k --grep=microcode
+* sudo journalctl -k --grep=microcode
 * test your network with ping
 * edit /etc/resolv.conf if you have DNS issues
+
+### Desktop environment
+
+* clone this repo as ~/.config and cd into it
+
+* you can specify variables with export before running the setup
+    * SSH_HOSTNAME SSH_IP SSH_USER
+    * GIT_MAIL GIT_USERNAME
+* run setup.sh
+
+* source ~/.zshrc
+* p10k configure
+    * Classic > Unicode > Dark > no time > Angled > Blurred > Blurred > Two Lines > Disconnected >
+        No frame > Sparse > Few icons > Concise > enable Transient Prompt > Verbose > Save  
+* run tmux and press prefix + I
+* reboot and run hypr 
+* you can delete the script if you want
+
+## Monitor configuration
+
+* Hyprland is configured to look for 2 monitors:
+```
+# hypr/vars.conf
+$mon1 = HDMI-A-1
+$mon2 = DVI-D-1 
+```
+
+## Keybinds
+
+### Hyprland
+##### Applications
+* SUPER + Q                 Terminal
+* SUPER + A                 Browser
+##### Desktop
+* SUPER + B                 Toggle eww bar
+* SUPER + E                 Enable color picker
+* SUPER + L                 Lock screen
+* SUPER + S                 Toggle blue light filter
+* SUPER + Escape            Open powermenu
+* SUPER + Space             Open app launcher
+##### Windows
+* SUPER + Left              Move focus left
+* SUPER + Right             Move focus right 
+* SUPER + Down              Move focus down 
+* SUPER + Up                Move focus up 
+* SUPER + SHIFT + Left      Move window left
+* SUPER + SHIFT + Right     Move window right 
+* SUPER + SHIFT + Down      Move window down 
+* SUPER + SHIFT + Up        Move window up 
+* SUPER + F11               Toggle fullscreen
+* SUPER + F                 Toggle floating window
+* SUPER + C                 Kill active window
+##### Workspaces
+* SUPER + {1-9}             Move to workspace X
+* SUPER + SHIFT + {1-9}     Move window to workspace X
+
+##### Screenshot
+* SUPER + Print             Screenshot the entire screen
+* SUPER + SHIFT + Print     Screenshot an area of the screen
+* ALT + Print               Save the last screenshot as ~/Pictures/scren.png 
+
+### tmux
+* CTRL + X                  Prefix combination
+* PREFIX + {-,|}            Split planes h/v
+* PREFIX + Z                Zoom active pane
+* PREFIX + C                Create window
+* PREFIX + X                Kill pane
+* PREFIX + &                Kill window
+* CTRL + {h,j,k,l}          Move focus between panes
+* ALT + SHIFT + {h,l}       Move focus between windows
+
+### alacritty
+* CTRL + {0,-,+}            Edit font size
 
