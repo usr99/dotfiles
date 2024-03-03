@@ -125,6 +125,13 @@ $mon1 = HDMI-A-1
 $mon2 = DVI-D-1 
 ```
 
+## Useful packages
+
+* `aur/legendary` is an epic games launcher
+* `aur/ckb-next` can replace Corsair iCue
+* `glow` is a command line markdown viewer
+* `sane-airscan` to scan documents with a local/remote device
+
 ## Keybinds
 
 ### Hyprland
