@@ -5,6 +5,7 @@ source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 alias grep=rg
 alias vim=nvim
 alias open=xdg-open
+alias cd=z
 export PATH=~/.cargo/bin:$PATH
 
 hypr() {
@@ -39,7 +40,8 @@ sudo pacman -S \
 	xdg-utils xdg-user-dirs wl-clipboard grim slurp feh \
 	zsh tmux neovim unzip ripgred fd \
 	rustup \
-	ttf-jetbrains-mono-nerd ttf-firacode-nerd
+	ttf-jetbrains-mono-nerd ttf-firacode-nerd \
+	zoxide fzf
 
 git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
 yay -Y --gendb && yay -Syu --devel && yay -Syu --devel --save
