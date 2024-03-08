@@ -29,7 +29,7 @@ size = 12
 family = "FiraMono Nerd Font"
 
 [window]
-opacity = 0.5
+opacity = 0.8
 padding.x = 10
 padding.y = 10
 
