@@ -79,6 +79,11 @@ echo "    RequestTTY yes" >> config
 echo "    RemoteCommand /usr/bin/zsh -l -c 'tmux'" >> config
 cd - 
 
+mkdir -p ~/.local/share/fonts
+cd ~/.local/share/fonts
+wget https://github.com/adi1090x/rofi/raw/master/fonts/Icomoon-Feather.ttf
+cd -
+
 git config --global user.mail $GIT_MAIL
 git config --global user.name $GIT_USERNAME
 
