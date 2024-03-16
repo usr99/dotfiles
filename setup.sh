@@ -47,7 +47,7 @@ rm -rf ./yay
 
 yay -S \
 	rofi-lbonn-wayland-git \
-	hyprshade hyprpicker-git hyprsome-git \
+	hyprshade hyprpicker-git \
 	swaylock-effects-git \
 	swww \
 	eww-git \
