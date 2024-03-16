@@ -21,6 +21,7 @@
     * Arch only
         * EFI system    | 512M
         * swap          | 4G
+        * home          | 30G or more if you want to install games here
         * filesystem    | remainder
     * Dual boot windows
         * see https://wiki.archlinux.org/title/Dual_boot_with_Windows_(Fran%C3%A7ais)#Syst%C3%A8mes_UEFI
@@ -119,11 +120,19 @@
 ## Monitor configuration
 
 * Hyprland is configured to look for 2 monitors:
+* `hyprctl monitors` will list monitors and their name
 ```
 # hypr/vars.conf
 $mon1 = HDMI-A-1
 $mon2 = DVI-D-1 
 ```
+
+## Useful packages
+
+* `aur/legendary` is an epic games launcher
+* `aur/ckb-next` can replace Corsair iCue
+* `glow` is a command line markdown viewer
+* `sane-airscan` to scan documents with a local/remote device
 
 ## Keybinds
 
@@ -157,7 +166,7 @@ $mon2 = DVI-D-1
 ##### Screenshot
 * SUPER + Print             Screenshot the entire screen
 * SUPER + SHIFT + Print     Screenshot an area of the screen
-* ALT + Print               Save the last screenshot as ~/Pictures/scren.png 
+* ALT + Print               Save the last screenshot as ~/Pictures/screen.png 
 
 ### tmux
 * CTRL + X                  Prefix combination
