@@ -41,6 +41,7 @@ bindings = [
 	{ key = "+", mods = "Control", action = "IncreaseFontSize" },
 	{ key = ")", mods = "Control", action = "DecreaseFontSize" },
 	{ key = "à", mods = "Control", action = "ResetFontSize" },
+ 	{ key = "F11", mods = "None", action = "ToggleFullscreen" }
 ]
 
 [shell]
