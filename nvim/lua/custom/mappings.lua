@@ -36,8 +36,6 @@ vim.keymap.set({ "n", "v" }, "<leader>P", [["+P]])
 vim.keymap.set("n", "Q", "<nop>")
 -- vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 
--- Show LSP info on hovered symbol
-vim.keymap.set("n", "<leader>h", vim.lsp.buf.hover)
 -- Format rust files
 vim.keymap.set("n", "<leader>f", "<cmd>RustFmt<CR>")
 -- Enable dimming of inactive portions of code
