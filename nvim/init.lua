@@ -83,16 +83,7 @@ require('lazy').setup({
 	"rafamadriz/friendly-snippets",
 	"williamboman/mason.nvim",
 	"williamboman/mason-lspconfig.nvim",
-	{
-		"nvim-lualine/lualine.nvim",
-		config = function()
-			require('lualine').setup({
-				options = {
-					globalstatus = true
-				}
-			})
-		end
-	},
+	"nvim-lualine/lualine.nvim",
 	"lewis6991/gitsigns.nvim",
 	{
 		"rust-lang/rust.vim",
@@ -113,22 +104,10 @@ require('lazy').setup({
 	},
 	"vimpostor/vim-tpipeline",
 	{
-		"danymat/neogen",
-		opts = {
-			enabled = true,
-			languages = {
-				c = {
-					template = {
-						annotation_convention = "doxygen"
-					}
-				}
-			}
-		}
-	},
-	{
 		"xiyaowong/transparent.nvim",
 		opts = {}
 	},
+	"nvim-treesitter/playground"
 })
 
 -- Import my custom config, mostly keybinds

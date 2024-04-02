@@ -62,6 +62,6 @@
    :halign "end"
 		(network)
 		(volume)
-		(brightness)
-		(battery)
+		;; (brightness)
+		;; (battery)
 		(powermenu)))

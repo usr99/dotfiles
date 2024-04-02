@@ -32,7 +32,7 @@
    (workspaces)
    (settings)))
 
-(defvar MONITOR_MODE "single")
+(defvar MONITOR_MODE "double")
 
 (defwindow bar-monitor0 
  :monitor 0
