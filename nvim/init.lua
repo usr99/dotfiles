@@ -86,7 +86,11 @@ require('lazy').setup({
 	{
 		"nvim-lualine/lualine.nvim",
 		config = function()
-			require('lualine').setup()
+			require('lualine').setup({
+				options = {
+					globalstatus = true
+				}
+			})
 		end
 	},
 	"lewis6991/gitsigns.nvim",
@@ -106,7 +110,25 @@ require('lazy').setup({
 			},
 			context = 20
 		}
-	}
+	},
+	"vimpostor/vim-tpipeline",
+	{
+		"danymat/neogen",
+		opts = {
+			enabled = true,
+			languages = {
+				c = {
+					template = {
+						annotation_convention = "doxygen"
+					}
+				}
+			}
+		}
+	},
+	{
+		"xiyaowong/transparent.nvim",
+		opts = {}
+	},
 })
 
 -- Import my custom config, mostly keybinds
