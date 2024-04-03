@@ -102,12 +102,14 @@ require('lazy').setup({
 			context = 20
 		}
 	},
-	"vimpostor/vim-tpipeline",
+	"xiyaowong/transparent.nvim",
+	"nvim-treesitter/playground",
 	{
-		"xiyaowong/transparent.nvim",
-		opts = {}
-	},
-	"nvim-treesitter/playground"
+		"vimpostor/vim-tpipeline",
+		init = function ()
+			vim.g.tpipeline_restore = 1
+		end
+	}
 })
 
 -- Import my custom config, mostly keybinds
