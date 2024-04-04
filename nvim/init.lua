@@ -109,7 +109,8 @@ require('lazy').setup({
 		init = function ()
 			vim.g.tpipeline_restore = 1
 		end
-	}
+	},
+	"dhruvasagar/vim-zoom"
 })
 
 -- Import my custom config, mostly keybinds

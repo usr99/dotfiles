@@ -5,8 +5,6 @@ end
 
 require('lualine').setup({
 	options = {
-		globalstatus = true,
-		icons_enable = true,
 		theme = 'onedark'
 	},
 	sections = {
