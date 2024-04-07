@@ -36,7 +36,7 @@ sudo pacman -S \
 	hyprland gtk3 gtk-layer-shell qt5-wayland qt5ct libva \
 	pipewire pipewire-pulse pipewire-audio pipewire-jack wireplumber \
 	bluez bluez-utils \
-	thunar alacritty firefox pulsemixer brightnessctl \
+	thunar alacritty firefox discord pulsemixer brightnessctl \
 	xdg-utils xdg-user-dirs wl-clipboard grim slurp feh \
 	zsh tmux neovim unzip ripgred fd \
 	rustup \
@@ -53,7 +53,6 @@ yay -S \
 	swaylock-effects-git \
 	swww \
 	eww-git \
-	discord_arch_electron \
 	noise-suppression-for-voice \
 	libva-nvidia-driver-git \
 	zsh-theme-powerlevel10k-git
