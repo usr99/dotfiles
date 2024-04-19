@@ -25,7 +25,7 @@ sudo pacman -S \
 	hyprland gtk3 gtk-layer-shell qt5-wayland qt5ct libva \
 	pipewire pipewire-pulse pipewire-audio pipewire-jack wireplumber \
 	bluez bluez-utils \
-	thunar alacritty firefox discord pulsemixer brightnessctl \
+	thunar alacritty firefox discord pulsemixer \
 	xdg-utils xdg-user-dirs wl-clipboard grim slurp feh \
 	zsh tmux neovim unzip ripgred fd \
 	rustup \
@@ -86,6 +86,8 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # Install OhMyZSH
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 echo -e "$ZSHRC" >> ~/.zshrc
+# Add web-search plugin
+sed 's/plugins=(git/& web-search/' -i ~/zshrc
 
 # Create user directories
 # Downloads, Pictures, etc.
