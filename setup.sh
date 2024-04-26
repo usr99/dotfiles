@@ -86,6 +86,8 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # Install OhMyZSH
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 echo -e "$ZSHRC" >> ~/.zshrc
+# Add web-search plugin
+sed 's/plugins=(git/& web-search/' -i ~/zshrc
 
 # Create user directories
 # Downloads, Pictures, etc.
