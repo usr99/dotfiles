@@ -22,15 +22,26 @@ local function recursive_ident_search(node, ident_list)
 end
 
 local generate_doc_fn = function(node)
-	local ident_list = {}
-	recursive_ident_search(node, ident_list) 
+	local parameters = nil
+	for child in node:iter_children() do
+		if child:type() == "parameter_list" then
+			parameters = child
+			break
+		end
+	end
 
-	local function_name = table.remove(ident_list, 1)
-	local lines = { "/*!", " * \\brief " .. function_name, " *" }
+	print(parameters)
+
+	local ident_list = {}
+	recursive_ident_search(parameters, ident_list) 
+
+	local lines = { "/*!", " * \\brief ", " *" }
 	for _, param in pairs(ident_list) do
 		table.insert(lines, " * \\param[in] " .. param)
 	end
-	table.insert(lines, " *")
+	if #ident_list ~= 0 then
+		table.insert(lines, " *")
+	end
 	table.insert(lines, " * \\return ")
 	table.insert(lines, " */")
 
@@ -108,6 +119,6 @@ function MY_NEOGEN()
 	vim.api.nvim_buf_set_lines(0, insert_pos, insert_pos, _, doc)
 
 	-- Move cursor on inserted text
-	vim.jump()
+	-- vim.jump()
 end
 
