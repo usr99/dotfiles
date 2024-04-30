@@ -4,6 +4,11 @@ SSH_DIR="$HOME/.ssh"
 ZSHRC="$HOME/.zshrc"
 TMPFILE=".tmp.wiguewihfg7sdrtg6d7s8tgw8ej"
 
+EFI=
+SWAP=
+HOME=
+ROOTFS=
+
 RED='\033[0;31m'
 BLUE='\033[1;34m'
 GREEN='\033[1;32m'
@@ -188,7 +193,7 @@ function dev {
 	rustup default stable
 	rustup component add rust-analyzer
 }
-#
+
 # function install_desktop {
 # 	# pacman
 # 	# paru
@@ -197,7 +202,7 @@ function dev {
 # 	# dev
 # 	# misc
 # }
-#
+
 # function create_user {
 #
 # }
@@ -209,31 +214,56 @@ function dev {
 # function grub {
 #
 # }
-#
-# function arch-chroot {
-# 	# locale
-# 	# grub
-# 	# create_user
-# }
-#
-# function pacstrap {
-#
-# }
-#
-function diy_partitioning {
-	local -n _efi=$1
-	local -n _swap=$2
-	local -n _home=$3
-	local -n _linux=$4
 
-	echo -en $GREEN"EFI$WHITE partition ? "
-	read _efi 
-	echo -en $GREEN"SWAP$WHITE partition ? "
-	read _swap 
-	echo -en $GREEN"HOME$WHITE partition ? "
-	read _home 
-	echo -en $GREEN"LINUX$WHITE partition ? "
-	read _linux 
+function __arch-chroot {
+	arch-chroot /mnt
+
+	ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
+	hwclock --systohc
+	
+	sed -e 's/\#en_US.UTF-8/en_US.UTF-8/' -i /etc/locale.gen
+	sed -e 's/\#fr_FR.UTF-8/fr_FR.UTF-8/' -i /etc/locale.gen
+	# locale-gen
+
+	echo LANG=fr_FR.UTF-8 > /etc/locale.conf
+	echo KEYMAP=us > /etc/vconsole.conf
+	echo archwin > /etc/hostname
+
+	# passwd
+	# useradd -m -G wheel mamartin
+	# passwd mamartin
+	
+	# locale
+	# grub
+	# create_user
+}
+
+function __pacstrap {
+	pacstrap -K /mnt \
+		base linux linux-firmware \
+		grub efibootmgr \
+		vim
+		# os-prober \
+		# man-pages man-db texinfo \
+		# iwd networkmanager dhcpcd openssh \
+		# intel-ucode or amd-ucode \
+		# nvidia-dkms \
+		# linux-headers
+}
+
+function diy_partitioning {
+	echo $YELLOW"[WARNING]"$WHITE "You must format your partitions yourself !"
+	echo $YELLOW"[WARNING]"$WHITE "Go back if you didn't."
+	wait_for_input
+
+	echo -en "Path to" $GREEN"EFI$WHITE partition ? "
+	read EFI 
+	echo -en "Path to" $GREEN"SWAP$WHITE partition ? "
+	read SWAP
+	echo -en "Path to" $GREEN"HOME$WHITE partition ? "
+	read HOME
+	echo -en "Path to" $GREEN"ROOT$WHITE partition ? "
+	read ROOTFS
 }
 
 function read_with_default {
@@ -257,12 +287,19 @@ function read_with_default {
 			return
 		fi
 	done
+}
 
+function set_partition_type {
+	type=$1
+	id=$2
+
+	echo t >> $TMPFILE
+	echo $id  >> $TMPFILE
+	echo $type >> $TMPFILE
 }
 
 function create_partition {
-	type=$1
-	size=$2
+	size=$1
 
 	echo n >> $TMPFILE
 	echo   >> $TMPFILE
@@ -272,26 +309,20 @@ function create_partition {
 		echo -n "+" >> $TMPFILE
 	fi
 	echo $size >> $TMPFILE
-
-	if [[ "$type" != "" ]]; then
-		echo t >> $TMPFILE
-		echo type >> $TMPFILE
-	fi
 }
 
 function default_partitioning {
-	local -n _efi=$1
-	local -n _swap=$2
-	local -n _home=$3
-	local -n _linux=$4
-
+	disk="/dev/nvme0n1"
+	tabletype="GPT"
+	sizeof_efi="512M"
+	sizeof_swap="4G"
+	sizeof_home="30G"
 	# read -p "Target disk ? " disk
-	read_with_default "Type of partition table [MBR/gpt]" tabletype "MBR" '^(mbr|MBR|gpt|GPT)$'
-	read_with_default "Size of $GREEN""EFI$WHITE partition [512M]" sizeof_efi "512M" '^[0-9]*(K|M|G|T|P)$'
-	read_with_default "Size of $GREEN""SWAP$WHITE partition [4G]" sizeof_swap "4G" '^[0-9]*(K|M|G|T|P)$'
-	read_with_default "Size of $GREEN""HOME$WHITE partition [30G]" sizeof_home "30G" '^[0-9]*(K|M|G|T|P)$'
+	# read_with_default "Type of partition table [MBR/gpt]" tabletype "MBR" '^(mbr|MBR|gpt|GPT)$'
+	# read_with_default "Size of $GREEN""EFI$WHITE partition [512M]" sizeof_efi "512M" '^[0-9]*(K|M|G|T|P)$'
+	# read_with_default "Size of $GREEN""SWAP$WHITE partition [4G]" sizeof_swap "4G" '^[0-9]*(K|M|G|T|P)$'
+	# read_with_default "Size of $GREEN""HOME$WHITE partition [30G]" sizeof_home "30G" '^[0-9]*(K|M|G|T|P)$'
 
-	echo $tabletype
 	if [[ "${tabletype^^}" = "MBR" ]]; then
 		tabletype="o"
 	else
@@ -299,88 +330,65 @@ function default_partitioning {
 	fi
 
 	echo $tabletype > $TMPFILE # init partition
-	create_partition "uefi" $sizeof_efi
-	create_partition "swap" $sizeof_swap
-	create_partition "home" $sizeof_home
-	create_partition ""     $sizeof_home
+	create_partition $sizeof_efi
+	create_partition $sizeof_swap
+	create_partition $sizeof_home
+	create_partition # root partition 
+	set_partition_type "uefi" 1
+	set_partition_type "swap" 2
+	set_partition_type "home" 3
+	echo p >> $TMPFILE # print partition table
 	echo w >> $TMPFILE # save to disk
 	cat $TMPFILE | fdisk $disk
 	rm $TMPFILE
 
-	_efi="$disk""n1"
-	_swap="$disk""n2"
-	_home="$disk""n3"
-	_linux="$disk""n4"
+	EFI="$disk""p1"
+	SWAP="$disk""p2"
+	HOME="$disk""p3"
+	ROOTFS="$disk""p4"
+
+	# Format partitions
+	mkfs.fat -F 32 $EFI
+	mkswap $SWAP
+	mkfs.ext4 $HOME
+	mkfs.ext4 $ROOTFS
+}
+
+function mount_partitions {
+	mount $ROOTFS /mnt
+	mount --mkdir $EFI /mnt/boot
+	mount --mkdir $HOME /mnt/home
+	swapon $SWAP
 }
 
 function partitioning {
-	# diy
-	
-		default_partitioning efi swap home linux 
-
 	print_header "Partitioning"
 	wait_for_input
 
-	read -p "Do you want this script to format your disk ? [y/N] " yesno
+	# read -p "Do you want this script to format your disk ? [y/N] " yesno
+	yesno="y"
 
 	if [[ "$yesno" != "y" ]]; then
-		diy_partitioning efi swap home linux 
+		diy_partitioning
 	else
-		default_partitioning efi swap home linux 
+		default_partitioning
 	fi
-
-	echo $efi $swap $home $linux
-
-	# diy ?
-	#	yes
-	#		go back if you didnt do it yet
-	#		no need to format
-	#		uefi ?
-	#		swap ?
-	#		home ?
-	#		linux ?
-	#	no
-	#		uefi size ? (512M)
-	#		swap size ? (4G)
-	#		home size ? (30G)
-	#		gpt or mbr ?
-
-	# sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk $disk
- #      o # clear the in memory partition table
- #      n # create efi partition
-	#
-	#
- #      +512M
- #      t
- #      uefi
- #      n # create swap partition
-	#
-	#
- #      +4G
- #      t
- #      swap
- #      n # create home partition
-	#
-	#
- #      +30G
- #      t
- #      home 
- #      n # create fs partition
-	#
-	#
-	#
- #      p # print the in-memory partition table
- #      w # write to disk before exit
-# EOF
 }
 
 function install_system {
-	# check efi boot
-	partitioning
-	# pacstrap
-	# arch-chroot
-	
+	if [[ $(cat /sys/firmware/efi/fw_platform_size) != "64" ]]; then
+		echo "You must boot in x64 UEFI for this installation"
+		return
+	fi
+
+	partitioning efi swap home root
+	mount_partitions
+
+	__pacstrap
+	genfstab -U /mnt >> /mnt/etc/fstab
+	__arch-chroot
 	# umount -R /mnt
+
 	# warn for grub
 	# warn for dns issues 
 	# run install desktop next time :)
