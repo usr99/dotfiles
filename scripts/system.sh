@@ -178,10 +178,10 @@ fi
 
 partitioning efi swap home root
 
-__pacstrap
+# __pacstrap
 genfstab -U /mnt >> /mnt/etc/fstab
 
 print_header "arch-chroot"
 wait_for_input
-{ cat "$dirname/utils.sh" & cat "$dirname/chroot.sh" } | arch-chroot /mnt
+cat $dirname/utils.sh $dirname/chroot.sh | arch-chroot /mnt
 
