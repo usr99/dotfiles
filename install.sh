@@ -1,13 +1,13 @@
 #!/bin/bash
 
-case $1 in
-	scripts="$(dirname "$0")/scripts"
+sourcedir=$(dirname "$0")
 
+case $1 in
 	"system")
-		$scripts/system.sh
+		$sourcedir/scripts/system.sh
 	;;
 	"desktop")
-		$scripts/desktop.sh
+		$sourcedir/scripts/desktop.sh
 	;;
 	*)
 		echo "Specify one of {system, desktop}"
