@@ -164,22 +164,24 @@ function partitioning {
 	fi
 }
 
-
+print_header "Verify boot mode"
 if [[ $(cat /sys/firmware/efi/fw_platform_size) != "64" ]]; then
 	echo "You must boot in x64 UEFI for this installation"
 	return
 fi
-
-	partitioning efi swap home root
-
-	__pacstrap
-	genfstab -U /mnt >> /mnt/etc/fstab
-	{ cat "$dirname/utils.sh" & cat "$dirname/chroot.sh" } | \
-		arch-chroot /mnt
 	# umount -R /mnt
 
 	# warn for grub
 	# warn for dns issues 
 	# run install desktop next time :)
 	# reboot
+
+partitioning efi swap home root
+
+__pacstrap
+genfstab -U /mnt >> /mnt/etc/fstab
+
+print_header "arch-chroot"
+wait_for_input
+{ cat "$dirname/utils.sh" & cat "$dirname/chroot.sh" } | arch-chroot /mnt
 
