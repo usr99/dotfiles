@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 RED='\033[0;31m'
 BLUE='\033[1;34m'
@@ -39,5 +39,56 @@ function print_header {
 	esac
 	
 	printc "$text" $color
+}
+
+function read_with_default {
+	text=$1
+	local -n value=$2
+	defvalue=$3
+	pattern=$4
+
+	while true; do
+		echo -en $text " "
+		read input
+
+		if [[ "$input" != "" ]]; then
+			if [[ "$input" =~ $pattern ]]; then
+				value=$input
+				return 
+			fi
+			echo -e $RED"Your input does not match this pattern: $pattern"$WHITE
+		else
+			value=$defvalue
+			return
+		fi
+	done
+}
+
+function read_with_entries {
+	args=($@)
+	text=${args[1]}
+	index=0
+
+	# Indexing starts at 0 and the first argument is not an entry 
+	# so the maximum entry index is the number of args - 2
+	max=$(expr ${#args[@]} - 2)
+
+	echo $BLUE$text ":"$WHITE
+	for i in "${args[@]:1}"; do
+		echo "[$YELLOW$index$WHITE]" $i
+		index=$(expr $index + 1)
+	done
+
+	while true; do
+		echo -n "Number : "
+		read num
+
+		if [[ "$num" =~ "^[0-$max]$" ]]; then
+			retval=${args[$(expr $num + 2)]}
+			return 
+		else
+			echo $RED"Your input must be a number in the following range [0-$max]"$WHITE
+		fi
+	done
 }
 

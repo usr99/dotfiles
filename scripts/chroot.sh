@@ -1,22 +1,19 @@
-#!/bin/bash
-
-ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
 hwclock --systohc
-
-sed -e 's/\#en_US.UTF-8/en_US.UTF-8/' -i /etc/locale.gen
-sed -e 's/\#fr_FR.UTF-8/fr_FR.UTF-8/' -i /etc/locale.gen
 locale-gen
 
-echo LANG=fr_FR.UTF-8 > /etc/locale.conf
-echo KEYMAP=us > /etc/vconsole.conf
-echo archwin > /etc/hostname
+groupadd sudo
+useradd -m -G sudo $USERADD_NAME
+echo "$USERADD_NAME:$USERADD_PASSWD" | chpasswd
 
-	# passwd
-	# useradd -m -G wheel mamartin
-	# passwd mamartin
-	
-	# locale
-	# grub
-	# create_user
+echo "root:$ROOT_PASSWD" | chpasswd
+passwd -l root
 
+git clone https://github.com/usr99/dotfiles /home/$USERADD_NAME/.config
+
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+grub-mkconfig -o /boot/grub/grub.cfg
+
+if [[ $ENABLE_NVIDIA_DRIVERS -eq 1 ]] ; then
+	mkinitcpio --config /etc/mkinitcpio.conf --generate /boot/initramfs-custom.img
+fi
 
