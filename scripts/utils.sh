@@ -43,9 +43,8 @@ function print_header {
 
 function read_with_default {
 	text=$1
-	local -n value=$2
-	defvalue=$3
-	pattern=$4
+	defvalue=$2
+	pattern=$3
 
 	while true; do
 		echo -en $text " "
@@ -53,12 +52,12 @@ function read_with_default {
 
 		if [[ "$input" != "" ]]; then
 			if [[ "$input" =~ $pattern ]]; then
-				value=$input
+				retval=$input
 				return 
 			fi
 			echo -e $RED"Your input does not match this pattern: $pattern"$WHITE
 		else
-			value=$defvalue
+			retval=$defvalue
 			return
 		fi
 	done

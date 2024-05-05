@@ -11,9 +11,12 @@ HOME=
 ROOTFS=
 
 function __pacstrap {
-	read_with_default "CPU ? [AMD/intel]" cpu "amd" "^(amd|intel)$" 
-	read_with_default "install os-prober (detect other systems) ? [y/N]" osprober "N" "^(y|n)$"
-	read_with_default "install nvidia drivers ? (mandatory with Hyprland) [y/N]" nvidia "N" "^(y|n)$"
+	read_with_default "CPU ? [AMD/intel]" "amd" "^(amd|intel)$" 
+	cpu=$retval
+	read_with_default "install os-prober (detect other systems) ? [y/N]" "N" "^(y|n)$"
+	osprober=$retval
+	read_with_default "install nvidia drivers ? (mandatory with Hyprland) [y/N]" "N" "^(y|n)$"
+	nvidia=$retval
 
 	packages=( \
 		"base" "linux" "linux-firmware" "linux-headers" \
@@ -84,9 +87,13 @@ function default_partitioning {
 	disk=$retval
 
 	read_with_entries "Choose a tabletype" "MBR" "GPT" 
-	read_with_default "Size of $GREEN""EFI$WHITE partition [512M] ?" sizeof_efi "512M" '^[0-9]*(K|M|G|T|P)$'
-	read_with_default "Size of $GREEN""SWAP$WHITE partition [4G] ?" sizeof_swap "4G" '^[0-9]*(K|M|G|T|P)$'
-	read_with_default "Size of $GREEN""HOME$WHITE partition [30G] ?" sizeof_home "30G" '^[0-9]*(K|M|G|T|P)$'
+	tabletype=$retval
+	read_with_default "Size of $GREEN""EFI$WHITE partition [512M] ?" "512M" '^[0-9]*(K|M|G|T|P)$'
+	sizeof_efi=$retval
+	read_with_default "Size of $GREEN""SWAP$WHITE partition [4G] ?" "4G" '^[0-9]*(K|M|G|T|P)$'
+	sizeof_swap=$retval
+	read_with_default "Size of $GREEN""HOME$WHITE partition [30G] ?" "30G" '^[0-9]*(K|M|G|T|P)$'
+	sizeof_home=$retval
 
 	if [[ "$tabletype" == "MBR" ]]; then
 		tabletype="o"
@@ -145,7 +152,8 @@ function uncomment {
 
 function __arch-chroot {
 	print_header "Time" 2
-	read_with_default "Set your timezone ? [Europe/Paris]" timezone "Europe/Paris"
+	read_with_default "Set your timezone ? [Europe/Paris]" "Europe/Paris"
+	timezone=$retval
 	ln -sf /mnt/usr/share/zoneinfo/$timezone /mnt/etc/localtime
 	timedatectl set-timezone $timezone
 
