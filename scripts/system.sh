@@ -11,11 +11,11 @@ HOME=
 ROOTFS=
 
 function __pacstrap {
-	read_with_default "CPU ? [AMD/intel]" "amd" "^(amd|intel)$" 
+	read_with_entries "CPU:" "amd" "intel"
 	cpu=$retval
-	read_with_default "install os-prober (detect other systems) ? [y/N]" "N" "^(y|n)$"
+	read_with_default "install os-prober ? (detect other systems)" "yes" "no"
 	osprober=$retval
-	read_with_default "install nvidia drivers ? (mandatory with Hyprland) [y/N]" "N" "^(y|n)$"
+	read_with_default "install nvidia drivers ? (mandatory with Hyprland)" "yes" "no"
 	nvidia=$retval
 
 	packages=( \
@@ -31,12 +31,12 @@ function __pacstrap {
 		packages+=("intel-ucode")
 	fi
 
-	if [[ "$osprober" == "y" ]]; then
+	if [[ "$osprober" == "yes" ]]; then
 		packages+=("os-prober")
 		export ENABLE_OS_PROBER=1
 	fi
 
-	if [[ "$nvidia" == "y" ]]; then
+	if [[ "$nvidia" == "yes" ]]; then
 		# packages+=("nvidia-dkms")
 		export ENABLE_NVIDIA_DRIVERS=1
 	fi
@@ -44,19 +44,42 @@ function __pacstrap {
 	pacstrap -K /mnt ${packages[@]}
 }
 
+function select_disk {
+	partitiontype=$1
+	disks=($(lsblk -r -o NAME,PARTTYPENAME | grep '[A-Za-z0-9]$' | tail -n +2 | sed 's/\([a-zA-Z0-9]*\) \(.*\)/\1 \2/g'))
+
+	i=1
+	entries=()
+	while [ $i -lt ${#disks[@]} ]; do
+		name=${disks[$i]}
+		type=${disks[$(expr $i + 1)]}
+
+		if [[ "$type" == "$partitiontype" ]]; then
+			entries+=("$name $GREEN($type)$WHITE")
+		else
+			entries+=("$name $YELLOW($type)$WHITE")
+		fi
+
+		i=$(expr $i + 2)
+	done
+
+	read_with_entries "Choose a $GREEN$partitiontype$BLUE partition:" ${entries[@]}
+	retval="/dev/"$(echo $retval | grep -o '^[^ ]*')
+}
+
 function diy_partitioning {
 	echo $YELLOW"[WARNING]"$WHITE "You must format your partitions yourself !"
 	echo $YELLOW"[WARNING]"$WHITE "Go back if you didn't."
 	wait_for_input
 
-	echo -en "Path to" $GREEN"EFI$WHITE partition ? "
-	read EFI 
-	echo -en "Path to" $GREEN"SWAP$WHITE partition ? "
-	read SWAP
-	echo -en "Path to" $GREEN"HOME$WHITE partition ? "
-	read HOME
-	echo -en "Path to" $GREEN"ROOT$WHITE partition ? "
-	read ROOTFS
+	select_disk "EFI\x20System"
+	EFI=$retval
+	select_disk "Linux swap"
+	SWAP=$retval
+	select_disk "Linux home"
+	HOME=$retval
+	select_disk "Linux filesystem"
+	ROOTFS=$retval
 }
 
 function set_partition_type {
@@ -88,11 +111,22 @@ function default_partitioning {
 
 	read_with_entries "Choose a tabletype" "MBR" "GPT" 
 	tabletype=$retval
-	read_with_default "Size of $GREEN""EFI$WHITE partition [512M] ?" "512M" '^[0-9]*(K|M|G|T|P)$'
-	sizeof_efi=$retval
-	read_with_default "Size of $GREEN""SWAP$WHITE partition [4G] ?" "4G" '^[0-9]*(K|M|G|T|P)$'
+
+	efi_system=$(lsblk -ro NAME,PARTTYPENAME | grep "EFI\x20System" | grep -o '^[^ ]*') 
+	if [[ "$efi_system" != "" ]]; then
+		read_with_entries "$efi_system contains a EFI system partition, would you like to use it ?" "yes" "no"
+		if [[ "$retval" == "no" ]]; then
+			read_with_default "Size of $GREEN""EFI$BLUE partition [512M] ?" "512M" '^[0-9]*(K|M|G|T|P)$'
+			sizeof_efi=$retval
+		fi
+	else
+		read_with_default "Size of $GREEN""EFI$BLUE partition [512M] ?" "512M" '^[0-9]*(K|M|G|T|P)$'
+		sizeof_efi=$retval
+	fi
+
+	read_with_default "Size of $GREEN""SWAP$BLUE partition [4G] ?" "4G" '^[0-9]*(K|M|G|T|P)$'
 	sizeof_swap=$retval
-	read_with_default "Size of $GREEN""HOME$WHITE partition [30G] ?" "30G" '^[0-9]*(K|M|G|T|P)$'
+	read_with_default "Size of $GREEN""HOME$BLUE partition [30G] ?" "30G" '^[0-9]*(K|M|G|T|P)$'
 	sizeof_home=$retval
 
 	if [[ "$tabletype" == "MBR" ]]; then
@@ -119,13 +153,13 @@ function default_partitioning {
 	HOME="$disk""p3"
 	ROOTFS="$disk""p4"
 
-	print_header "Formatting partitions" 3
+	print_header "Formatting partitions"
 	mkfs.fat -F 32 $EFI
 	mkswap $SWAP
 	mkfs.ext4 -F $HOME # -F to overwrite any previous ext4
 	mkfs.ext4 -F $ROOTFS
 
-	print_header "Mountpoints" 3
+	print_header "Mountpoints"
 	mount $ROOTFS /mnt
 	mount --mkdir $EFI /mnt/boot
 	mount --mkdir $HOME /mnt/home
@@ -133,10 +167,8 @@ function default_partitioning {
 }
 
 function partitioning {
-	echo -n "Do you want this script to format your disk ? [y/N] "
-	read yesno
-
-	if [[ "$yesno" != "y" ]]; then
+	read_with_entries "Do you want this script to format your disk ?" "yes" "no"
+	if [[ "$retval" == "no" ]]; then
 		diy_partitioning
 	else
 		default_partitioning
@@ -168,17 +200,14 @@ function __arch-chroot {
 	uncomment /mnt/etc/locale.gen "fr_FR.UTF-8"
 
 	print_header "Create your main user" 2
-	echo -n "username: "
-	read USERADD_NAME
-	echo -n "password: "
-	read -s USERADD_PASSWD
-	export USERADD_NAME
-	export USERADD_PASSWD
+	read_input "username"
+	export USERADD_NAME=$retval
+	read_secret "password"
+	export USERADD_PASSWD=$retval
 
 	print_header "root" 2
-	echo "root password ? "
-	read -s ROOT_PASSWD
-	export ROOT_PASSWD
+	read_secret "root password"
+	export ROOT_PASSWD=$retval
 
 	print_header "Configuration" 2
 	wait_for_input
@@ -214,13 +243,12 @@ print_header "Enable wpa_supplicant"
 wpa_supplicant -B -c /etc/wpa_supplicant/wpa_supplicant.conf -i wlan0
 
 print_header "Partitioning"
-partitioning efi swap home root
+partitioning
 
 print_header "Install essential packages"
 __pacstrap
 genfstab -U /mnt >> /mnt/etc/fstab
 
-print_header "arch-chroot"
 __arch-chroot
 
 # umount -R /mnt

@@ -41,18 +41,31 @@ function print_header {
 	printc "$text" $color
 }
 
+function read_input {
+	text=$1
+	rdargs=$2
+
+	if [[ "$text" != "" ]]; then
+		echo $BLUE$text$WHITE
+	fi
+	echo -n $BLUE"> "$WHITE
+	read $rdargs retval
+}
+
+function read_secret {
+	read_input $1 '-s'
+}
+
 function read_with_default {
 	text=$1
 	defvalue=$2
 	pattern=$3
 
 	while true; do
-		echo -en $text " "
-		read input
+		read_input $text
 
-		if [[ "$input" != "" ]]; then
-			if [[ "$input" =~ $pattern ]]; then
-				retval=$input
+		if [[ "$retval" != "" ]]; then
+			if [[ "$retval" =~ $pattern ]]; then
 				return 
 			fi
 			echo -e $RED"Your input does not match this pattern: $pattern"$WHITE
@@ -66,11 +79,11 @@ function read_with_default {
 function read_with_entries {
 	args=($@)
 	text=${args[1]}
-	index=0
+	index=1
 
-	# Indexing starts at 0 and the first argument is not an entry 
-	# so the maximum entry index is the number of args - 2
-	max=$(expr ${#args[@]} - 2)
+	# The first argument is not an entry 
+	# so the maximum entry index is the number of args - 1
+	max=$(expr ${#args[@]} - 1)
 
 	echo $BLUE$text ":"$WHITE
 	for i in "${args[@]:1}"; do
@@ -79,14 +92,13 @@ function read_with_entries {
 	done
 
 	while true; do
-		echo -n "Number : "
-		read num
+		read_input
 
-		if [[ "$num" =~ "^[0-$max]$" ]]; then
-			retval=${args[$(expr $num + 2)]}
+		if [[ "$retval" =~ "^[1-$max]$" ]]; then
+			retval=${args[$(expr $retval + 1)]}
 			return 
 		else
-			echo $RED"Your input must be a number in the following range [0-$max]"$WHITE
+			echo $RED"Your input must be a number in the following range [1-$max]"$WHITE
 		fi
 	done
 }
