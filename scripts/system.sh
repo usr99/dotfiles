@@ -112,7 +112,7 @@ function default_partitioning {
 	read_with_entries "Choose a tabletype" "MBR" "GPT" 
 	tabletype=$retval
 
-	efi_system=$(lsblk -ro NAME,PARTTYPENAME | grep "EFI\x20System" | grep -o '^[^ ]*') 
+	efi_system=$(lsblk -ro NAME,PARTTYPENAME | grep 'EFI\x20System' | grep -o '^[^ ]*') 
 	if [[ "$efi_system" != "" ]]; then
 		read_with_entries "$efi_system contains a EFI system partition, would you like to use it ?" "yes" "no"
 		if [[ "$retval" == "no" ]]; then
