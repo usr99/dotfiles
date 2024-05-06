@@ -13,9 +13,9 @@ ROOTFS=
 function __pacstrap {
 	read_with_entries "CPU:" "amd" "intel"
 	cpu=$retval
-	read_with_default "install os-prober ? (detect other systems)" "yes" "no"
+	read_with_entries "install os-prober ? (detect other systems)" "yes" "no"
 	osprober=$retval
-	read_with_default "install nvidia drivers ? (mandatory with Hyprland)" "yes" "no"
+	read_with_entries "install nvidia drivers ? (mandatory with Hyprland)" "yes" "no"
 	nvidia=$retval
 
 	packages=( \
