@@ -215,9 +215,11 @@ function __arch-chroot {
 	print_header "Enable pacman parallel downloads" 3
 	uncomment /mnt/etc/pacman.conf "ParallelDownloads"
 	print_header "Sudoers" 3
-	echo "Defaults insults" >> /mnt/etc/sudoers
-	echo "Defaults timestamp_timeout=15" >> /mnt/etc/sudoers
-	uncomment /mnt/etc/sudoers "sudo ALL=(ALL:ALL) ALL"
+	echo "sudo ALL=(ALL:ALL) ALL" > /mnt/etc/sudoers.d/rules.conf
+	cat > /mnt/etc/sudoers.d/settings.conf << EOF
+echo "Defaults insults" >> /mnt/etc/sudoers
+echo "Defaults timestamp_timeout=15" >> /mnt/etc/sudoers
+EOF
 
 	if [[ $ENABLE_OS_PROBER -eq 1 ]] ; then
 		print_header "Enable os-prober" 2
