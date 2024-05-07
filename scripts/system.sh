@@ -231,25 +231,25 @@ function __arch-chroot {
 		echo see $BLUE"https://wiki.hyprland.org/Nvidia/"$WHITE for more info
 	fi
 
-	cat $dirname/utils.sh $dirname/chroot.sh | arch-chroot /mnt
+	cat $dirname/chroot.sh | arch-chroot /mnt
 }
-
-print_header "Verify boot mode"
-if [[ $(cat /sys/firmware/efi/fw_platform_size) != "64" ]]; then
-	echo "You must boot in x64 UEFI for this installation"
-	return
-fi
-
-print_header "Enable wpa_supplicant"
-wpa_supplicant -B -c /etc/wpa_supplicant/wpa_supplicant.conf -i wlan0
-
-print_header "Partitioning"
-partitioning
-
-print_header "Install essential packages"
-__pacstrap
-genfstab -U /mnt >> /mnt/etc/fstab
-
+#
+# print_header "Verify boot mode"
+# if [[ $(cat /sys/firmware/efi/fw_platform_size) != "64" ]]; then
+# 	echo "You must boot in x64 UEFI for this installation"
+# 	return
+# fi
+#
+# print_header "Enable wpa_supplicant"
+# wpa_supplicant -B -c /etc/wpa_supplicant/wpa_supplicant.conf -i wlan0
+#
+# print_header "Partitioning"
+# partitioning
+#
+# print_header "Install essential packages"
+# __pacstrap
+# genfstab -U /mnt >> /mnt/etc/fstab
+#
 __arch-chroot
 
 # umount -R /mnt
