@@ -18,7 +18,7 @@ function pacman {
 		bluez bluez-utils \
 		thunar alacritty firefox discord pulsemixer \
 		xdg-utils xdg-user-dirs wl-clipboard grim slurp feh \
-		zsh tmux neovim unzip ripgrep fd \
+		zsh neovim unzip ripgrep fd \
 		rustup \
 		ttf-jetbrains-mono-nerd ttf-firacode-nerd \
 		zoxide fzf

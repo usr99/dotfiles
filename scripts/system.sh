@@ -22,7 +22,7 @@ function __pacstrap {
 		"base" "linux" "linux-firmware" "linux-headers" \
 		"grub" "efibootmgr" \
 		"iwd" "networkmanager" "dhcpcd" "openssh" \
-		"vim" "git" "sudo" \
+		"vim" "git" "sudo" "tmux" \
 		"man-pages" "man-db" "texinfo" )
 
 	if [[ "$cpu" == "amd" ]]; then
@@ -211,7 +211,6 @@ function __arch-chroot {
 	export ROOT_PASSWD=$retval
 
 	print_header "Configuration" 2
-	wait_for_input
 	print_header "Enable pacman parallel downloads" 3
 	uncomment /mnt/etc/pacman.conf "ParallelDownloads"
 	print_header "Sudoers" 3
@@ -235,23 +234,23 @@ EOF
 
 	cat $dirname/chroot.sh | arch-chroot /mnt
 }
-#
-# print_header "Verify boot mode"
-# if [[ $(cat /sys/firmware/efi/fw_platform_size) != "64" ]]; then
-# 	echo "You must boot in x64 UEFI for this installation"
-# 	return
-# fi
-#
-# print_header "Enable wpa_supplicant"
-# wpa_supplicant -B -c /etc/wpa_supplicant/wpa_supplicant.conf -i wlan0
-#
-# print_header "Partitioning"
-# partitioning
-#
-# print_header "Install essential packages"
-# __pacstrap
-# genfstab -U /mnt >> /mnt/etc/fstab
-#
+
+print_header "Verify boot mode"
+if [[ $(cat /sys/firmware/efi/fw_platform_size) != "64" ]]; then
+	echo "You must boot in x64 UEFI for this installation"
+	return
+fi
+
+print_header "Enable wpa_supplicant"
+wpa_supplicant -B -c /etc/wpa_supplicant/wpa_supplicant.conf -i wlan0
+
+print_header "Partitioning"
+partitioning
+
+print_header "Install essential packages"
+__pacstrap
+genfstab -U /mnt >> /mnt/etc/fstab
+
 __arch-chroot
 
 # umount -R /mnt
