@@ -186,9 +186,8 @@ function uncomment {
 function __arch-chroot {
 	print_header "Time" 2
 	read_with_default "Set your timezone ? [Europe/Paris]" "Europe/Paris"
-	timezone=$retval
-	ln -sf /mnt/usr/share/zoneinfo/$timezone /mnt/etc/localtime
-	timedatectl set-timezone $timezone
+	export TIMEZONE=$retval
+	ln -sf /mnt/usr/share/zoneinfo/$TIMEZONE /mnt/etc/localtime
 
 	print_header "Locale" 2
 	read_with_entries "Choose your language" "fr_FR" "en_US"
