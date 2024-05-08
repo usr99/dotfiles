@@ -195,8 +195,8 @@ function __arch-chroot {
 	echo LANG=$retval.UTF-8 > /mnt/etc/locale.conf
 	read_with_entries "Choose your keyboard layout" "fr" "us"
 	echo KEYMAP=$retval > /mnt/etc/vconsole.conf
-	echo -n "Set your hostname ? "
-	cat > /mnt/etc/hostname
+	read_input "Hostname"
+	echo $retval > /mnt/etc/hostname
 	uncomment /mnt/etc/locale.gen "en_US.UTF-8"
 	uncomment /mnt/etc/locale.gen "fr_FR.UTF-8"
 
@@ -214,10 +214,10 @@ function __arch-chroot {
 	print_header "Enable pacman parallel downloads" 3
 	uncomment /mnt/etc/pacman.conf "ParallelDownloads"
 	print_header "Sudoers" 3
-	echo "sudo ALL=(ALL:ALL) ALL" > /mnt/etc/sudoers.d/rules.conf
+	echo "%sudo ALL=(ALL:ALL) ALL" > /mnt/etc/sudoers.d/rules.conf
 	cat > /mnt/etc/sudoers.d/settings.conf << EOF
-echo "Defaults insults" >> /mnt/etc/sudoers
-echo "Defaults timestamp_timeout=15" >> /mnt/etc/sudoers
+Defaults insults
+Defaults timestamp_timeout=15
 EOF
 
 	if [[ $ENABLE_OS_PROBER -eq 1 ]] ; then
