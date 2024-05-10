@@ -37,7 +37,7 @@ function __pacstrap {
 	fi
 
 	if [[ "$nvidia" == "yes" ]]; then
-		# packages+=("nvidia-dkms")
+		packages+=("nvidia-dkms")
 		export ENABLE_NVIDIA_DRIVERS=1
 	fi
 
@@ -187,7 +187,7 @@ function __arch-chroot {
 	print_header "Time" 2
 	read_with_default "Set your timezone ? [Europe/Paris]" "Europe/Paris"
 	export TIMEZONE=$retval
-	ln -sf /mnt/usr/share/zoneinfo/$TIMEZONE /mnt/etc/localtime
+	ln -sf /usr/share/zoneinfo/$TIMEZONE /mnt/etc/localtime
 
 	print_header "Locale" 2
 	read_with_entries "Choose your language" "fr_FR" "en_US"
@@ -213,8 +213,8 @@ function __arch-chroot {
 	print_header "Enable pacman parallel downloads" 3
 	uncomment /mnt/etc/pacman.conf "ParallelDownloads"
 	print_header "Sudoers" 3
-	echo "%sudo ALL=(ALL:ALL) ALL" > /mnt/etc/sudoers.d/rules.conf
-	cat > /mnt/etc/sudoers.d/settings.conf << EOF
+	echo "%sudo ALL=(ALL:ALL) ALL" > /mnt/etc/sudoers.d/rules
+	cat > /mnt/etc/sudoers.d/settings << EOF
 Defaults insults
 Defaults timestamp_timeout=15
 EOF

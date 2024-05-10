@@ -18,7 +18,7 @@ function printc {
 
 function wait_for_input {
 	printc "Press [ENTER] to continue" $YELLOW
-	read -n1
+	read -n 1
 }
 
 function print_header {
