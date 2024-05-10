@@ -1,4 +1,3 @@
-timedatectl set-timezone $TIMEZONE
 hwclock --systohc
 locale-gen
 
@@ -15,7 +14,6 @@ grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 
 if [[ $ENABLE_NVIDIA_DRIVERS -eq 1 ]] ; then
-	echo enable nvidia
-	# mkinitcpio --config /etc/mkinitcpio.conf --generate /boot/initramfs-custom.img
+	mkinitcpio --config /etc/mkinitcpio.conf --generate /boot/initramfs-custom.img
 fi
 

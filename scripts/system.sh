@@ -74,11 +74,11 @@ function diy_partitioning {
 
 	select_disk "EFI\x20System"
 	EFI=$retval
-	select_disk "Linux swap"
+	select_disk "Linux\x20swap"
 	SWAP=$retval
-	select_disk "Linux home"
+	select_disk "Linux\x20home"
 	HOME=$retval
-	select_disk "Linux filesystem"
+	select_disk "Linux\x20filesystem"
 	ROOTFS=$retval
 }
 
