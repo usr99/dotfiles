@@ -1,6 +1,8 @@
 hwclock --systohc
 locale-gen
 
+echo "/usr/bin/zsh" | chsh
+
 groupadd sudo
 useradd -m -G sudo $USERADD_NAME
 echo "$USERADD_NAME:$USERADD_PASSWD" | chpasswd

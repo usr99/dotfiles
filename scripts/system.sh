@@ -22,7 +22,7 @@ function __pacstrap {
 		"base" "linux" "linux-firmware" "linux-headers" \
 		"grub" "efibootmgr" \
 		"iwd" "networkmanager" "dhcpcd" "openssh" \
-		"vim" "git" "sudo" "tmux" \
+		"vim" "git" "sudo" "tmux" "zsh" \
 		"man-pages" "man-db" "texinfo" )
 
 	if [[ "$cpu" == "amd" ]]; then
@@ -194,8 +194,11 @@ function __arch-chroot {
 	echo LANG=$retval.UTF-8 > /mnt/etc/locale.conf
 	read_with_entries "Choose your keyboard layout" "fr" "us"
 	echo KEYMAP=$retval > /mnt/etc/vconsole.conf
+	print_header "Network" 2
 	read_input "Hostname"
 	echo $retval > /mnt/etc/hostname
+	print_header "Copy wpa_supplicant configuration" 3
+	cp -r /etc/wpa_supplicant /mnt/etc
 	uncomment /mnt/etc/locale.gen "en_US.UTF-8"
 	uncomment /mnt/etc/locale.gen "fr_FR.UTF-8"
 
