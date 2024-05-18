@@ -112,19 +112,18 @@ function default_partitioning {
 	read_with_entries "Choose a tabletype" "MBR" "GPT" 
 	tabletype=$retval
 
-	# efi_system=$(lsblk -ro NAME,PARTTYPENAME | grep 'EFI\x20System' | grep -o '^[^ ]*') 
-	efi_system=$(lsblk -o NAME,PARTTYPENAME | grep 'EFI System' | sed 's/^..\([a-z0-9]*\)\s*EFI System/\1/')
-	if [[ "$efi_system" != "" ]]; then
-		read_with_entries "$efi_system contains a EFI system partition, would you like to use it ?" "yes" "no"
-		if [[ "$retval" == "no" ]]; then
-			read_with_default "Size of $GREEN""EFI$BLUE partition [512M] ?" "512M" '^[0-9]*(K|M|G|T|P)$'
-			sizeof_efi=$retval
-		fi
-	else
-		read_with_default "Size of $GREEN""EFI$BLUE partition [512M] ?" "512M" '^[0-9]*(K|M|G|T|P)$'
-		sizeof_efi=$retval
-	fi
+	# efi_system=$(lsblk -o NAME,PARTTYPENAME | grep 'EFI System' | sed 's/^..\([a-z0-9]*\)\s*EFI System/\1/')
+	# if [[ "$efi_system" != "" ]]; then
+	# 	read_with_entries "$efi_system contains a EFI system partition, would you like to use it ?" "yes" "no"
+	# 	if [[ "$retval" == "no" ]]; then
+	# 	fi
+	# else
+	# 	read_with_default "Size of $GREEN""EFI$BLUE partition [512M] ?" "512M" '^[0-9]*(K|M|G|T|P)$'
+	# 	sizeof_efi=$retval
+	# fi
 
+	read_with_default "Size of $GREEN""EFI$BLUE partition [512M] ?" "512M" '^[0-9]*(K|M|G|T|P)$'
+	sizeof_efi=$retval
 	read_with_default "Size of $GREEN""SWAP$BLUE partition [4G] ?" "4G" '^[0-9]*(K|M|G|T|P)$'
 	sizeof_swap=$retval
 	read_with_default "Size of $GREEN""HOME$BLUE partition [30G] ?" "30G" '^[0-9]*(K|M|G|T|P)$'
@@ -194,13 +193,10 @@ function __arch-chroot {
 	echo LANG=$retval.UTF-8 > /mnt/etc/locale.conf
 	read_with_entries "Choose your keyboard layout" "fr" "us"
 	echo KEYMAP=$retval > /mnt/etc/vconsole.conf
-	print_header "Network" 2
-	read_input "Hostname"
-	echo $retval > /mnt/etc/hostname
-	print_header "Copy wpa_supplicant configuration" 3
-	cp -r /etc/wpa_supplicant /mnt/etc
 	uncomment /mnt/etc/locale.gen "en_US.UTF-8"
 	uncomment /mnt/etc/locale.gen "fr_FR.UTF-8"
+	read_input "Hostname"
+	echo $retval > /mnt/etc/hostname
 
 	print_header "Create your main user" 2
 	read_input "username"
@@ -213,6 +209,8 @@ function __arch-chroot {
 	export ROOT_PASSWD=$retval
 
 	print_header "Configuration" 2
+	print_header "Copy wpa_supplicant configuration" 3
+	cp -r /etc/wpa_supplicant /mnt/etc
 	print_header "Enable pacman parallel downloads" 3
 	uncomment /mnt/etc/pacman.conf "ParallelDownloads"
 	print_header "Sudoers" 3

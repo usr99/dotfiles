@@ -55,6 +55,18 @@ function networking {
 	sudo ufw enable
 	sudo ufw default deny
 
+	
+	print_header "Wifi configuration" 2
+	read_input "SSID"
+	ssid=$retval
+	read_secret "Password"
+	psk=$retval
+
+	nmcli connection add type wifi con-name $ssid ifname wlan0 ssid $ssid 
+	nmcli c modify $ssid wifi-sec.key-mgmt wpa-psk
+	nmcli c modify $ssid wifi-sec.psk $psk
+	nmcli c up $ssid
+
 	print_header "Configure SSH" 2
 	print_header "Generate RSA key pair" 3
 	ssh-keygen -t rsa
@@ -64,20 +76,17 @@ function networking {
 }
 
 function sshconfig {
-	echo -en $YELLOW
-	read -n 1 -p "Would you like to add a SSH host ? [y/N] " input
-	echo -en $WHITE
-	echo
-
-	echo $SSH_DIR/config
-
-	if [[ "$input" != "y" ]]; then
+	read_with_entries "Would you like to add a SSH host ?" "yes" "no"
+	if [[ "$retval" != "yes" ]]; then
 		return 
 	fi
 
-	read -p "Host ? " host
-	read -p "IP ? " addr
-	read -p "Username ? " user
+	read_input "Hostname"
+	host=$retval
+	read_input "IP Address"
+	addr=$retval
+	read_input "Username"
+	user=$retval
 
 	echo "Host $host" > $SSH_DIR/config
 	echo "    HostName $addr" >> $SSH_DIR/config
@@ -127,8 +136,11 @@ function dev {
 	wait_for_input
 
 	print_header "GIT configuration" 2
-	read -p "Email Address ? " mail
-	read -p "Username ? " username 
+	read_input "Email Address"
+	mail=$retval
+	read_input "Username"
+	username=$retval
+
 	git config --global user.email $mail
 	git config --global user.name $username
 
@@ -149,9 +161,9 @@ function misc {
 	LC_ALL=C xdg-user-dirs-update
 }
 
+networking
 pacman
 paru
-networking
 terminal
 dev
 misc
