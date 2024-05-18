@@ -8,7 +8,8 @@ echo "$USERADD_NAME:$USERADD_PASSWD" | chpasswd
 echo "root:$ROOT_PASSWD" | chpasswd
 passwd -l root
 
-git clone https://github.com/usr99/dotfiles /home/$USERADD_NAME/.config
+su $USERADD_NAME -c "git clone https://github.com/usr99/dotfiles /home/$USERADD_NAME/.config"
+touch /home/$USERADD_NAME/.zshrc
 
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg

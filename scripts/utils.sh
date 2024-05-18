@@ -54,6 +54,7 @@ function read_input {
 
 function read_secret {
 	read_input $1 '-s'
+	echo
 }
 
 function read_with_default {
