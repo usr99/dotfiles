@@ -7,5 +7,7 @@
    :orientation "h"
    :halign "start"
    (scalable :var _arch_hover :strvar "_arch_hover"
-    (label :text "" :class "archlinux"))
+    (button :class "archlinux"
+			:onclick "./scripts/switch_monitor_layout.sh"
+			(label :text "")))
    (box :class "clock" (label :text _time))))
