@@ -18,10 +18,11 @@ function __pacstrap {
 	read_with_entries "install nvidia drivers ? (mandatory with Hyprland)" "yes" "no"
 	nvidia=$retval
 
-	packages=( \
+	packages=( \zsh 
 		"base" "linux" "linux-firmware" "linux-headers" \
 		"grub" "efibootmgr" \
 		"iwd" "networkmanager" "dhcpcd" "openssh" \
+		"ufw" "nftables" "bluez" "bluez-utils" \
 		"vim" "git" "sudo" "tmux" "zsh" \
 		"man-pages" "man-db" "texinfo" )
 

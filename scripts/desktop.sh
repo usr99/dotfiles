@@ -5,31 +5,34 @@ source "$(dirname "$0")/utils.sh"
 SSH_DIR="$HOME/.ssh"
 ZSHRC="$HOME/.zshrc"
 
-function pacman {
+function __pacman {
 	print_header "Install packages from Arch repositories"
 	wait_for_input
 
+# binutils make gcc pkg-config fakeroot flex bison \
+
 	sudo pacman -Syu \
-		nftables ufw \
-		bqinutils make gcc pkg-config fakeroot flex bison \
+		base-devel \
 		hyprland gtk3 gtk-layer-shell qt5-wayland qt5ct libva \
 		pipewire pipewire-pulse pipewire-audio pipewire-jack wireplumber \
 		noise-suppression-for-voice \
-		bluez bluez-utils \
 		thunar alacritty firefox discord pulsemixer \
 		xdg-utils xdg-user-dirs wl-clipboard grim slurp feh \
-		zsh neovim unzip ripgrep fd \
+		neovim unzip ripgrep fd \
 		rustup \
 		ttf-jetbrains-mono-nerd ttf-firacode-nerd \
 		zoxide fzf
 }
 
-function paru {
+function __paru {
 	print_header "Install paru and packages from AUR"
 	wait_for_input
 
+	print_header "Install Rust toolchain" 2
+	rustup default stable # paru is written in rust
+
 	git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si
-	cd - && rm -r paru 
+	cd - && rm -rf paru 
 
 	paru -S \
 		rofi-lbonn-wayland-git \
@@ -55,7 +58,6 @@ function networking {
 	sudo ufw enable
 	sudo ufw default deny
 
-	
 	print_header "Wifi configuration" 2
 	read_input "SSID"
 	ssid=$retval
@@ -144,8 +146,7 @@ function dev {
 	git config --global user.email $mail
 	git config --global user.name $username
 
-	print_header "Rust toolchain" 2
-	rustup default stable
+	print_header "Install rust-analyzer" 2
 	rustup component add rust-analyzer
 }
 
@@ -162,8 +163,8 @@ function misc {
 }
 
 networking
-pacman
-paru
+__pacman
+__paru
 terminal
 dev
 misc
