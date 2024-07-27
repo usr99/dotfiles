@@ -47,7 +47,7 @@ function __pacstrap {
 
 function select_disk {
 	partitiontype=$1
-	disks=($(lsblk -r -o NAME,PARTTYPENAME | grep '[A-Za-z0-9]$' | tail -n +2 | sed 's/\([a-zA-Z0-9]*\) \(.*\)/\1 \2/g'))
+	disks=($(lsblk -r -o NAME,PARTTYPENAME | grep '[A-Za-z0-9\-\/\(\)]$' | tail -n +2 | sed 's/\([a-zA-Z0-9]*\) \(.*\)/\1 \2/g'))
 
 	i=1
 	entries=()
