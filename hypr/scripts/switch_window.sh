@@ -2,7 +2,7 @@
 
 current=$(hyprctl activewindow | awk '{ if ($1 == "workspace:") print $2 }')
 
-workspaces=($(hyprctl workspaces | awk '{ if ($1 == "workspace") print $3 }'))
+workspaces=($(hyprctl monitors | awk '{ if ($1 == "active" && $2 == "workspace:") print $3 }'))
 for w in ${workspaces[@]}
 do
 	if [[ "$w" != "$current" ]]; then
