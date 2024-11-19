@@ -11,7 +11,7 @@ PACKAGES_COMMON=( \
 	firefox discord feh unzip ripgrep fd pulsemixer \
 	alacritty neovim vim git tmux zsh zoxide fzf rustup \
 	ttf-jetbrains-mono-nerd ttf-firacode-nerd \
-	xdg-utils xdg-user-dirs \
+	xdg-utils xdg-user-dirs brightnessctl \
 )
 PACKAGES_WAYLAND=( \
 	hyprland wl-clipboard grim slurp qt5-wayland \
