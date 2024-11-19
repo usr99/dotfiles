@@ -1,7 +1,6 @@
 #!/usr/bin/zsh
 
 dirname=$(dirname "$0")
-source "$dirname/utils.sh"
 source "$dirname/config.sh"
 source "$dirname/packages.sh"
 
