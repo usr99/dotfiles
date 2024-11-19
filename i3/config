@@ -25,13 +25,13 @@ set $mon2 DVI-D-0
 font "JetBrainsMono Nerd Font"
 
 # Run picom for transparency
-exec --no-startup-id picom -b
+exec_always --no-startup-id picom -b
 # Configure monitors
-exec --no-startup-id xrandr --output $mon1 --primary
-exec --no-startup-id xrandr --output $mon2 --right-of $mon1
+exec_always --no-startup-id xrandr --output $mon1 --primary
+exec_always --no-startup-id xrandr --output $mon2 --right-of $mon1
 
 # Set wallpaper
-exec --no-startup-id nitrogen --restore
+exec_always --no-startup-id nitrogen --restore
 
 # Bind workspaces to monitors
 workspace 1  output  $mon1
