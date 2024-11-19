@@ -160,7 +160,7 @@ workspace 10 output  $mon2
     bindsym XF86AudioLowerVolume exec pulsemixer --change-volume -5
     bindsym XF86AudioRaiseVolume exec pulsemixer --change-volume +5
     # Screenshot (window)
-    bindsym Print exec scrot -u $HOME/Pictures/Screenshots/screenshot-$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'
+    bindsym Print exec scrot -u $HOME/Pictures/screenshots/capture-$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'
     # Run pacman update
     bindsym $mod+u exec $term --class 'floating' -e sudo pacman -Syu
     # Open pulsemixer

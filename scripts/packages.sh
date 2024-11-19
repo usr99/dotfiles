@@ -17,7 +17,7 @@ PACKAGES_WAYLAND=( \
 	hyprland wl-clipboard grim slurp qt5-wayland \
 )
 PACKAGES_X11=( \
-	picom xorg xorg-xinit rofi i3-wm xclip nitrogen \
+	picom xorg xorg-xinit rofi i3-wm xclip nitrogen scrot \
 )
 
 AUR_COMMON=( \

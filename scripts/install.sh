@@ -191,6 +191,7 @@ LC_ALL=C xdg-user-dirs-update \n \
 mkdir -p ~/.local/share \n \
 ln -sf ../../.config/fonts ~/.local/share/fonts \n \
 ln -sf ../.config/wallpapers ~/Pictures \n \
+mkdir ~/Pictures/screenshots \n \
  \n \
 mkdir -p ~/.tmux/plugins \n \
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm \n \
