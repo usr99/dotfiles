@@ -161,6 +161,8 @@ fi \n \
 CHROOT_AS_USER="\
 cd \$HOME \n \
  \n \
+git clone https://github.com/usr99/dotfiles .config \n \
+ \n \
 rustup default stable \n \
 rustup component add rust-analyzer \n \
  \n \
@@ -181,8 +183,6 @@ if [ $ENABLE_I3 -eq 1 ] ; then \n \
 	# Fix bug where the default cursor still shows on most windows
 	sed 's/^Inherits.*$/Inherits=BreezeX-Dark/' -i /usr/share/icons/default/index.theme 
 fi \n \
- \n \
-git clone https://github.com/usr99/dotfiles ~/.config \n \
  \n \
 if [ $ENABLE_I3 -eq 1 ] ; then \n \
 	echo \"Xcursor.theme: BreezeX-Dark\" > ~/.Xresources \n \
