@@ -41,10 +41,6 @@ if [ ! -z "$DISK" ]; then
 
 
   +4G
-  n # create home partition
-
-
-  +30G
   n # create root partition
 
 
@@ -55,26 +51,20 @@ uefi
 t
 2
 swap
-t
-3
-home
   w # write the partition table
   q # and we're done
 EOF
 
 	EFI="$DISK"p1
 	SWAP="$DISK"p2
-	HOME="$DISK"p3
-	ROOT="$DISK"p4
+	ROOT="$DISK"p3
 
 	mkfs.fat -F 32 $EFI
-	mkfs.ext4 -F $HOME
 	mkfs.ext4 -F $ROOT
 	mkswap $SWAP
 
 	mount $ROOT /mnt
 	mount --mkdir $EFI /mnt/boot
-	mount --mkdir $HOME /mnt/home
 	swapon $SWAP
 fi
 
