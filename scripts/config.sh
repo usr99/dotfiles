@@ -2,7 +2,7 @@
 
 # Path to the wpa_supplicant configuration
 # comment this line if you are using another network method
-WIFI_CONF="/etc/wpa_supplicant/wpa_supplicant.conf"
+WPA_CONF="/etc/wpa_supplicant/wpa_supplicant.conf"
 
 # Select the disk to install the system onto
 # comment this line if you want to handle partitioning/formatting/mounting yourself
