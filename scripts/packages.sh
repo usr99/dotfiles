@@ -50,7 +50,7 @@ fi
 
 if [ $ENABLE_GAMING -eq 1 ]; then
 	PACKAGES_COMMON+=(jdk21-openjdk)
-	PACKAGES_MULTILIB=(steam lib32-libpulse)
+	PACKAGES_MULTILIB=(steam lib32-libpulse wine wine-mono)
 	AUR_COMMON+=( \
 		heroic-games-launcher \
 		prismlauncher \
