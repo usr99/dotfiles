@@ -4,8 +4,6 @@ dirname=$(dirname "$0")
 source "$dirname/config.sh"
 source "$dirname/packages.sh"
 
-WIFI_CONF="/etc/wpa_supplicant/wpa_supplicant.conf"
-
 function uncomment {
 	filename=$1
 	pattern=$2
@@ -26,8 +24,10 @@ if [[ $(cat /sys/firmware/efi/fw_platform_size) != "64" ]]; then
 	return
 fi
 
-print_header "Enable wpa_supplicant"
-wpa_supplicant -B -c $WIFI_CONF -i wlan0
+if [ ! -z "$WPA_CONF" ]; then
+	print_header "Enable wpa_supplicant"
+	wpa_supplicant -B -c $WPA_CONF -i wlan0
+fi
 
 print_header "Partitioning"
 if [ ! -z "$DISK" ]; then
@@ -91,7 +91,10 @@ for locale in ${LOCALES[@]}; do
 	uncomment /mnt/etc/locale.gen $locale
 done
 uncomment /mnt/etc/pacman.conf "ParallelDownloads"
-cp $WIFI_CONF /mnt$WIFI_CONF
+
+if [ ! -z "$WPA_CONF" ]; then
+	cp $WPA_CONF /mnt$WPA_CONF
+fi
 
 pushd /mnt/etc/sudoers.d
 # the 'NOPASSWD' option is set to make the installation process easier

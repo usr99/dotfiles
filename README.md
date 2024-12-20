@@ -26,6 +26,14 @@ cp -r /usr/share/archiso/configs/releng ./archlive
 cp ./scripts/* ./archlive/airootfs/root
 ```
 
+For WiFi connectivity, create a network configuration file inside `./archlive/airootfs/etc/wpa_supplicant/wpa_supplicant.conf` with the following layout:
+```
+network={
+    ssid=<ssid>
+    psk=<password>
+}
+```
+
 Edit `./archlive/airootfs/root/config.sh` to configure your installation process, then run:
 
 ```zsh
