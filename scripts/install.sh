@@ -17,24 +17,24 @@ function uncomment {
 
 set -e
 
-if [ ! -n "$TMUX" ]; then
+if [ ! -n $TMUX ]; then
 	echo "It is mandatory to run this script inside a TMUX session"
 	exit
 fi
 
 print_header "Verify boot mode"
-if [[ $(cat /sys/firmware/efi/fw_platform_size) != "64" ]]; then
+if [ $(cat /sys/firmware/efi/fw_platform_size) -eq 64 ]; then
 	echo "You must boot in x64 UEFI for this installation"
 	return
 fi
 
-if [ ! -z "$WPA_CONF" ]; then
+if [ ! -z $WPA_CONF ]; then
 	print_header "Enable wpa_supplicant"
 	wpa_supplicant -B -c $WPA_CONF -i wlan0
 fi
 
 print_header "Partitioning"
-if [ ! -z "$DISK" ]; then
+if [ ! -z $DISK ]; then
 	sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk $DISK
   g # clear the in memory partition table (g=GPT|o=MBR)
   n # create efi partition
@@ -86,7 +86,7 @@ for locale in ${LOCALES[@]}; do
 done
 uncomment /mnt/etc/pacman.conf "ParallelDownloads"
 
-if [ ! -z "$WPA_CONF" ]; then
+if [ ! -z $WPA_CONF ]; then
 	cp $WPA_CONF /mnt$WPA_CONF
 fi
 
