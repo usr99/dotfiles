@@ -4,6 +4,10 @@ dirname=$(dirname "$0")
 source "$dirname/config.sh"
 source "$dirname/packages.sh"
 
+function print_header {
+	printf "\033[34;1m$1\033[0m\n"
+}
+
 function uncomment {
 	filename=$1
 	pattern=$2
