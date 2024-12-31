@@ -221,9 +221,19 @@ alias open=xdg-open \n \
 alias cd=z \n \
 "
 
+XORG_TOUCHPAD="\
+Section "InputClass"
+        Identifier "touchpad"
+        MatchIsTouchpad "on"
+        Driver "libinput"
+        Option "Tapping" "on"
+EndSection
+"
+
 echo $CHROOT_AS_ROOT | arch-chroot /mnt
 echo $CHROOT_AS_USER | arch-chroot /mnt su $USER_NAME
 echo $ZSHRC >> /mnt/home/$USER_NAME/.zshrc
+echo $XORG_TOUCHPAD > /mnt/etc/X11/xorg.conf.d/90-touchpad.conf
 
 # Restore a sudo rule that requires password
 echo "%sudo ALL=(ALL:ALL) ALL" > /mnt/etc/sudoers.d/rules
