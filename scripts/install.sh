@@ -179,8 +179,12 @@ if [ $ENABLE_I3 -eq 1 ] ; then \n \
 fi \n \
  \n \
 if [ $ENABLE_I3 -eq 1 ] ; then \n \
-	echo \"Xcursor.theme: BreezeX-Dark\" > ~/.Xresources \n \
-	echo \"Xcursor.size: 32\" >> ~/.Xresources \n \
+	mkdir -p ~/.icons/default \n \
+	pushd ~/.icons/default \n \
+	echo "[Icon Theme]" > index.theme \n \
+	echo "Inherits=BreezeX-Dark" >> index.theme \n \
+	echo "Size=32" >> index.theme \n \
+	popd \n \
 	ln -sf .config/xinitrc ~/.xinitrc \n \
 fi \n \
  \n \
@@ -232,6 +236,7 @@ EndSection
 
 echo $CHROOT_AS_ROOT | arch-chroot /mnt
 echo $CHROOT_AS_USER | arch-chroot /mnt su $USER_NAME
+
 echo $ZSHRC >> /mnt/home/$USER_NAME/.zshrc
 echo $XORG_TOUCHPAD > /mnt/etc/X11/xorg.conf.d/90-touchpad.conf
 
