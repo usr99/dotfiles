@@ -25,7 +25,7 @@ reboot=' Reboot'
 lock=' Lock'
 cli=' Return to CLI'
 yes=' Yes'
-no=' No'
+no=' No'
 
 # Rofi CMD
 rofi_cmd() {
