@@ -13,9 +13,10 @@ set $right l
 set $term alacritty
 set $browser firefox
 set $launcher "~/.config/rofi/scripts/launcher.sh"
-set $exitwm "i3-msg exit"
-set $lock 'xlock -mode rubik'
-set $powermenu "~/.config/rofi/scripts/powermenu.sh $exitwm $lock"
+
+set $exitwm i3-msg exit
+set $lock xlock -mode rubik
+set $powermenu ~/.config/rofi/scripts/powermenu.sh
 
 # Monitors
 # You can get the names of your outputs by running: i3-msg -t get_outputs
@@ -53,7 +54,7 @@ workspace 10 output  $mon2
     bindsym $mod+q       exec $term
     bindsym $mod+e       exec $browser
     bindsym $mod+space   exec $launcher
-    bindsym $mod+Escape  exec $powermenu
+    bindsym $mod+Escape  exec $powermenu "$exitwm" "$lock"
 
     # Kill focused window
     bindsym $mod+c kill
