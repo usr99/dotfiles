@@ -17,6 +17,7 @@ set $launcher "~/.config/rofi/scripts/launcher.sh"
 set $exitwm i3-msg exit
 set $lock xlock -mode rubik
 set $powermenu ~/.config/rofi/scripts/powermenu.sh
+set $screenshot "/home/$USER/Pictures/$(date +%Y%m%d-%H%M-%s).png"
 
 # Monitors
 # You can get the names of your outputs by running: i3-msg -t get_outputs
@@ -160,8 +161,17 @@ workspace 10 output  $mon2
     # Special keys to adjust volume via PulseAudio
     bindsym XF86AudioLowerVolume exec pulsemixer --change-volume -5
     bindsym XF86AudioRaiseVolume exec pulsemixer --change-volume +5
-    # Screenshot (window)
-    bindsym Print exec scrot -u $HOME/Pictures/screenshots/capture-$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'
+
+	# Screenshots
+	bindsym Print exec --no-startup-id maim $screenshot
+	bindsym $mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) $screenshot
+	bindsym Shift+Print exec --no-startup-id maim --select $screenshot
+
+	## Clipboard Screenshots
+	bindsym Ctrl+Print exec --no-startup-id maim | xclip -selection clipboard -t image/png
+	bindsym Ctrl+$mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
+	bindsym Ctrl+Shift+Print exec --no-startup-id maim --select | xclip -selection clipboard -t image/png
+
     # Run pacman update
     bindsym $mod+u exec $term --class 'floating' -e sudo pacman -Syu
     # Open pulsemixer
